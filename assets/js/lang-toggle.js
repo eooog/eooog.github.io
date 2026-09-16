@@ -39,6 +39,14 @@
     });
   }
 
+  function updateRssLink() {
+    var link = document.getElementById('rss-link');
+    if (!link) return;
+    var mode = document.documentElement.getAttribute('lang-mode') === 'ko' ? 'ko' : 'en';
+    var feed = mode === 'ko' ? link.getAttribute('data-feed-ko') : link.getAttribute('data-feed-en');
+    if (feed) link.setAttribute('href', feed);
+  }
+
   function supportedLangs(article) {
     var raw = article.getAttribute('data-langs') || '';
     return raw.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
@@ -95,5 +103,7 @@
 
     initGlobalToggle();
     initPostArticles();
+    updateRssLink();
+    document.addEventListener('langchange', updateRssLink);
   });
 })();

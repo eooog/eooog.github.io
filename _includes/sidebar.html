@@ -98,8 +98,8 @@
       aria-label="Switch Language"
       id="lang-toggle"
     >
-      <span data-lang="en">EN</span>
-      <span data-lang="ko">KO</span>
+      <span data-lang="en">en</span>
+      <span data-lang="ko">ko</span>
     </button>
 
     {% if site.data.contact.size > 0 %}
@@ -126,7 +126,7 @@
             javascript:void(location.href = 'mailto:' + ['{{ email[0] }}','{{ email[1] }}'].join('@'))
           {%- endcapture -%}
         {% when 'rss' %}
-          {% assign url = '/feed.xml' | relative_url %}
+          {% assign url = '/feed.en.xml' | relative_url %}
         {% else %}
           {% assign url = entry.url %}
       {% endcase %}
@@ -135,6 +135,11 @@
         <a
           href="{{ url }}"
           aria-label="{{ entry.type }}"
+          {% if entry.type == 'rss' %}
+            id="rss-link"
+            data-feed-en="{{ '/feed.en.xml' | relative_url }}"
+            data-feed-ko="{{ '/feed.ko.xml' | relative_url }}"
+          {% endif %}
           {% assign link_types = '' %}
 
           {% unless entry.noblank %}
