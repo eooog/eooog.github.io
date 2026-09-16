@@ -7,8 +7,14 @@
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
 
-- type: rss
+- type: rss-en
   icon: "fas fa-rss"
+  url: "/feed.en.xml"
+  noblank: true
+
+- type: rss-ko
+  icon: "fas fa-rss"
+  url: "/feed.ko.xml"
   noblank: true
 # Uncomment and complete the url below to enable more contact options
 #

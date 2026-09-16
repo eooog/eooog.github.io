@@ -1,0 +1,84 @@
+/*
+  Language toggle styling.
+
+  Mechanism: any element tagged data-lang="en" / data-lang="ko" is hidden by
+  default and shown depending on the <html lang-mode="..."> attribute (set by
+  assets/js/lang-toggle.js, mirroring how dark/light mode works).
+
+  A post page can locally override this via <article data-post-lang="...">
+  (set by the in-post language switch button) -- that scoped rule always wins
+  over the sidebar's global toggle.
+*/
+
+/*
+  !important is used throughout this file on purpose: these rules are a
+  utility layer sitting on top of the theme's own styles (some of which,
+  e.g. ".content p { display: flow-root }", are more specific than a bare
+  [data-lang] selector), and they must always win regardless of that.
+  "revert" (rather than "initial") is used for the shown state so a <p>
+  goes back to "block"/"flow-root" and a <span> to "inline", instead of
+  every tag flattening to CSS's tag-agnostic "initial" value.
+*/
+
+/* default: hide every language-tagged fragment */
+[data-lang] {
+  display: none !important;
+}
+
+/* global toggle (sidebar button), applies site-wide */
+html[lang-mode="en"] [data-lang="en"] {
+  display: revert !important;
+}
+html[lang-mode="ko"] [data-lang="ko"] {
+  display: revert !important;
+}
+
+/* per-post temporary override always wins inside its own article */
+article[data-post-lang="en"] [data-lang="ko"],
+article[data-post-lang="ko"] [data-lang="en"] {
+  display: none !important;
+}
+article[data-post-lang="en"] [data-lang="en"],
+article[data-post-lang="ko"] [data-lang="ko"] {
+  display: revert !important;
+}
+
+/* hide whole list entries (home cards, archive/category/tag rows) whose post
+   doesn't support the currently active language */
+html[lang-mode="en"] .i18n-post:not(.lang-en) {
+  display: none !important;
+}
+html[lang-mode="ko"] .i18n-post:not(.lang-ko) {
+  display: none !important;
+}
+
+/* sidebar language toggle button */
+#lang-toggle {
+  min-width: 2.4em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* in-post temporary language switch */
+.i18n-post-switch {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+.i18n-post-switch button {
+  border: 1px solid var(--text-muted-color, currentColor);
+  background: transparent;
+  color: inherit;
+  border-radius: 1rem;
+  padding: 0.1rem 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  opacity: 0.6;
+  cursor: pointer;
+}
+.i18n-post-switch button.active {
+  opacity: 1;
+  font-weight: 600;
+  border-color: var(--link-color, currentColor);
+}

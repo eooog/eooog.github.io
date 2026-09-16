@@ -1,0 +1,34 @@
+---
+layout: compress
+swcache: true
+---
+
+[
+{%- assign first_entry = true -%}
+{%- for post in site.posts -%}
+  {%- if post.langs -%}
+    {%- assign post_langs = post.langs -%}
+  {%- else -%}
+    {%- assign post_langs = site.lang | split: ',' -%}
+  {%- endif -%}
+  {%- for l in post_langs -%}
+    {%- unless first_entry -%},{%- endunless -%}
+    {%- assign first_entry = false -%}
+    {%- if l == 'ko' -%}
+      {%- assign entry_title = post.title_ko | default: post.title -%}
+    {%- else -%}
+      {%- assign entry_title = post.title -%}
+    {%- endif -%}
+    {%- capture entry_content -%}{% include post-summary.html post=post lang=l full_text=true %}{%- endcapture -%}
+    {
+      "title": {{ entry_title | jsonify }},
+      "url": {{ post.url | relative_url | jsonify }},
+      "lang": {{ l | jsonify }},
+      "categories": {{ post.categories | join: ', ' | jsonify }},
+      "tags": {{ post.tags | join: ', ' | jsonify }},
+      "date": {{ post.date | jsonify }},
+      "content": {{ entry_content | jsonify }}
+    }
+  {%- endfor -%}
+{%- endfor -%}
+]

@@ -1,0 +1,81 @@
+<!--
+  Jekyll Simple Search loader
+  See: <https://github.com/christian-fei/Simple-Jekyll-Search>
+-->
+
+{% capture result_elem %}
+  <article class="px-1 px-sm-2 px-lg-4 px-xl-0">
+    <header>
+      <h2><a href="{url}">{title}</a></h2>
+      <div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1">
+        {categories}
+        {tags}
+      </div>
+    </header>
+    <p>{content}</p>
+  </article>
+{% endcapture %}
+
+{% capture not_found %}<p class="mt-5">{{ site.data.locales[include.lang].search.no_results }}</p>{% endcapture %}
+
+<script>
+  {% comment %} Note: dependent library will be loaded in `js-selector.html` {% endcomment %}
+  document.addEventListener('DOMContentLoaded', () => {
+    const templateMiddleware = function(prop, value, template) {
+      if (prop === 'categories') {
+        if (value === '') {
+          return `${value}`;
+        } else {
+          return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`;
+        }
+      }
+
+      if (prop === 'tags') {
+        if (value === '') {
+          return `${value}`;
+        } else {
+          return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`;
+        }
+      }
+    };
+
+    let allEntries = null;
+    let searchInput = document.getElementById('search-input');
+
+    function currentLang() {
+      return document.documentElement.getAttribute('lang-mode') === 'ko' ? 'ko' : 'en';
+    }
+
+    function initSearch() {
+      // Re-create the input so any listener from a previous init is dropped,
+      // instead of stacking a new one on top of it every time the language
+      // toggle fires.
+      const freshInput = searchInput.cloneNode(true);
+      searchInput.parentNode.replaceChild(freshInput, searchInput);
+      searchInput = freshInput;
+
+      const lang = currentLang();
+      const json = allEntries ? allEntries.filter((entry) => entry.lang === lang) : [];
+
+      SimpleJekyllSearch({
+        searchInput: searchInput,
+        resultsContainer: document.getElementById('search-results'),
+        json: json,
+        searchResultTemplate: '{{ result_elem | strip_newlines }}',
+        noResultsText: '{{ not_found }}',
+        templateMiddleware: templateMiddleware
+      });
+    }
+
+    fetch('{{ '/assets/js/data/search.json' | relative_url }}')
+      .then((res) => res.json())
+      .then((data) => {
+        allEntries = data;
+        initSearch();
+      });
+
+    document.addEventListener('langchange', () => {
+      if (allEntries) initSearch();
+    });
+  });
+</script>

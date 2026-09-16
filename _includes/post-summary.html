@@ -1,0 +1,54 @@
+{%- comment -%}
+  Get the post's description or body content.
+
+  Arguments:
+    lang: 'en' or 'ko' -- which language's text to summarize. Default is 'en'.
+          For 'ko', uses post.content_ko when present (bilingual post),
+          otherwise falls back to the native post.content (Korean-only post).
+    full_text: If true, return the full content. Default is false.
+    max_length: The maximum length of the returned content. Default is 200.
+{%- endcomment -%}
+
+{%- assign summary_lang = include.lang | default: 'en' -%}
+
+{%- if summary_lang == 'en' -%}
+  {%- assign raw = post.content -%}
+{%- else -%}
+  {%- if post.content_ko -%}
+    {%- assign raw = post.content_ko | markdownify -%}
+  {%- else -%}
+    {%- assign raw = post.content -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if post.description and include.full_text != true and summary_lang == 'en' -%}
+  {{- post.description -}}
+{%- else -%}
+  {%- comment -%} Remove the line numbers from the code snippet. {%- endcomment -%}
+
+  {%- assign content = raw -%}
+
+  {%- if content contains '<td class="rouge-gutter gl"><pre class="lineno">' -%}
+    {%- assign content = content
+      | replace: '<td class="rouge-gutter gl"><pre class="lineno">',
+        '<!-- <td class="rouge-gutter gl"><pre class="lineno">'
+    -%}
+    {%- assign content = content | replace: '</td><td class="rouge-code">', '</td> --><td class="rouge-code">' -%}
+  {%- endif -%}
+
+  {%- assign content = content
+    | markdownify
+    | strip_html
+    | newline_to_br
+    | replace: '<br />', ' '
+    | strip_newlines
+    | strip
+  -%}
+
+  {%- unless include.full_text -%}
+    {%- assign max_length = include.max_length | default: 200 -%}
+    {%- assign content = content | truncate: max_length -%}
+  {%- endunless -%}
+
+  {{- content -}}
+{%- endif -%}

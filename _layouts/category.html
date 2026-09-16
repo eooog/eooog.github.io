@@ -1,0 +1,44 @@
+---
+layout: page
+# The Category layout
+---
+
+{% include lang.html %}
+
+<div id="page-category">
+  <h1 class="ps-lg-2">
+    <i class="far fa-folder-open fa-fw text-muted"></i>
+    {{ page.title }}
+    <span class="lead text-muted ps-2">{{ page.posts | size }}</span>
+  </h1>
+
+  <ul class="content ps-0">
+    {% for post in page.posts %}
+      {% if post.langs %}
+        {% assign post_langs = post.langs %}
+      {% else %}
+        {% assign post_langs = site.lang | split: ',' %}
+      {% endif %}
+
+      <li class="d-flex justify-content-between px-md-3 i18n-post{% for l in post_langs %} lang-{{ l }}{% endfor %}">
+        <a href="{{ post.url | relative_url }}">
+          {% if post_langs contains 'en' %}<span data-lang="en">{{ post.title }}</span>{% endif %}
+          {% if post_langs contains 'ko' %}
+            <span data-lang="ko">{{ post.title_ko | default: post.title }}</span>
+          {% endif %}
+        </a>
+        <span class="dash flex-grow-1"></span>
+        {% if post_langs contains 'en' %}
+          <span data-lang="en">
+            {% include datetime.html date=post.date class='text-muted small text-nowrap' lang='en' %}
+          </span>
+        {% endif %}
+        {% if post_langs contains 'ko' %}
+          <span data-lang="ko">
+            {% include datetime.html date=post.date class='text-muted small text-nowrap' lang='ko-KR' %}
+          </span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
