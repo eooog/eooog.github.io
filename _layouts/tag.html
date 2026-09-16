@@ -27,16 +27,7 @@ layout: page
           {% endif %}
         </a>
         <span class="dash flex-grow-1"></span>
-        {% if post_langs contains 'en' %}
-          <span data-lang="en">
-            {% include datetime.html date=post.date class='text-muted small text-nowrap' lang='en' %}
-          </span>
-        {% endif %}
-        {% if post_langs contains 'ko' %}
-          <span data-lang="ko">
-            {% include datetime.html date=post.date class='text-muted small text-nowrap' lang='ko-KR' %}
-          </span>
-        {% endif %}
+        {% include datetime.html date=post.date class='text-muted small text-nowrap' lang=lang %}
       </li>
     {% endfor %}
   </ul>

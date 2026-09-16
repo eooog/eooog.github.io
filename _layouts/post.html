@@ -49,28 +49,14 @@ script_includes:
       <!-- published date -->
       <span>
         {{ site.data.locales[lang].post.posted }}
-        {% if post_langs contains 'en' %}
-          <span data-lang="en">{% include datetime.html date=page.date tooltip=true lang='en' %}</span>
-        {% endif %}
-        {% if post_langs contains 'ko' %}
-          <span data-lang="ko">{% include datetime.html date=page.date tooltip=true lang='ko-KR' %}</span>
-        {% endif %}
+        {% include datetime.html date=page.date tooltip=true lang=lang %}
       </span>
 
       <!-- lastmod date -->
       {% if page.last_modified_at and page.last_modified_at != page.date %}
         <span>
           {{ site.data.locales[lang].post.updated }}
-          {% if post_langs contains 'en' %}
-            <span data-lang="en">
-              {% include datetime.html date=page.last_modified_at tooltip=true lang='en' %}
-            </span>
-          {% endif %}
-          {% if post_langs contains 'ko' %}
-            <span data-lang="ko">
-              {% include datetime.html date=page.last_modified_at tooltip=true lang='ko-KR' %}
-            </span>
-          {% endif %}
+          {% include datetime.html date=page.last_modified_at tooltip=true lang=lang %}
         </span>
       {% endif %}
 
