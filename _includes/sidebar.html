@@ -92,15 +92,30 @@
     {% endunless %}
 
     <!-- language toggle: switches which language's title/date/content is shown -->
-    <button
-      type="button"
-      class="btn btn-link nav-link"
-      aria-label="Switch Language"
-      id="lang-toggle"
-    >
-      <span data-lang="en">en</span>
-      <span data-lang="ko">ko</span>
-    </button>
+    <div class="btn-group dropup">
+      <button
+        type="button"
+        class="btn btn-link nav-link"
+        aria-label="Switch Language"
+        id="lang-toggle"
+        data-bs-toggle="dropdown"
+      >
+        <span data-lang="en">en</span>
+        <span data-lang="ko">ko</span>
+      </button>
+      <ul class="dropdown-menu rounded-3 mb-1 p-1">
+        <li>
+          <button class="dropdown-item d-flex align-items-center" type="button" data-lang-option="en">
+            English
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item d-flex align-items-center" type="button" data-lang-option="ko">
+            한국어
+          </button>
+        </li>
+      </ul>
+    </div>
 
     {% if site.data.contact.size > 0 %}
       <span class="icon-border"></span>

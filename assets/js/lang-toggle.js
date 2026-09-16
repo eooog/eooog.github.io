@@ -29,14 +29,25 @@
     document.dispatchEvent(new CustomEvent('langchange', { detail: { mode: mode } }));
   }
 
-  function initGlobalToggle() {
-    var btn = document.getElementById('lang-toggle');
-    if (!btn) return;
-
-    btn.addEventListener('click', function () {
-      var current = document.documentElement.getAttribute('lang-mode') === 'ko' ? 'ko' : 'en';
-      setGlobalMode(current === 'en' ? 'ko' : 'en');
+  function syncActiveOption() {
+    var mode = document.documentElement.getAttribute('lang-mode') === 'ko' ? 'ko' : 'en';
+    document.querySelectorAll('[data-lang-option]').forEach(function (opt) {
+      opt.classList.toggle('active', opt.getAttribute('data-lang-option') === mode);
     });
+  }
+
+  function initGlobalToggle() {
+    var options = document.querySelectorAll('[data-lang-option]');
+    if (!options.length) return;
+
+    options.forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        setGlobalMode(opt.getAttribute('data-lang-option'));
+      });
+    });
+
+    syncActiveOption();
+    document.addEventListener('langchange', syncActiveOption);
   }
 
   function updateRssLink() {
