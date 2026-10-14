@@ -8,8 +8,6 @@ lang: ko
 toc: true
 ---
 
-# 설계 결정으로 살펴보는 LCA 배치 시스템
-
 **Backend Engineering · Selected Design Decisions**  
 Java 21 · Spring Boot 3.4.5 · Spring Batch 5 · Oracle · MyBatis
 
