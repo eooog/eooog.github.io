@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "LCA 배치 시스템 — 주요 설계 결정 (요약)"
-date: 2026-10-15 19:00:00 +0900
+date: 2026-10-15 00:00:00 +0900
 categories: [Engineering, Backend]
 tags: [spring-batch, oracle, batch-processing, architecture]
 lang: ko
