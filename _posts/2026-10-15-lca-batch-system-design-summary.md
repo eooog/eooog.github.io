@@ -8,8 +8,6 @@ lang: ko
 toc: true
 ---
 
-# LCA 배치 시스템 — 주요 설계 결정 
-
 **Java 21 · Spring Boot 3.4.5 · Spring Batch 5 · Oracle · MyBatis**
 
 여러 원천 시스템의 데이터를 일 단위로 최신화하는 제조업 LCA 배치 시스템이다. DAG 오케스트레이터, 분산 작업 선점 및 재시도, 제품 변경 이력 관리, 대용량 배치 처리 최적화를 직접 구현했다.
